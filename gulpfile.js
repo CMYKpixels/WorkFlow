@@ -12,7 +12,8 @@ var notify = require('gulp-notify');
 var reload = browserSync.reload;
 var mkdirp = require('mkdirp');
 var connectPHP = require('gulp-connect-php');
-
+var phpMinify = require('gulp-php-minify');
+var htmlminify = require("gulp-html-minify");
 
 /*Définition des paths du site*/
 var path ={
@@ -20,8 +21,8 @@ var path ={
 		styles: './src/sass/',
 		scripts: './src/js/',
 		images: './src/img/',
-		html: './src/html/*.html',
-		php: './src/html/*.php'
+		html: './src/html/**/*.html',
+		php: './src/html/**/*.php'
 	},
 	dist : {
 		styles: './dist/css/',
@@ -34,17 +35,6 @@ var path ={
 };
 
 
-gulp.task('connect', function() {
-  connectPHP.server({
-    hostname: 'localhost',
-    bin: 'D:/Logiciels/UwAmp/bin/php/php-5.6.18/php.exe', //A modifié selon la config
-    ini: 'D:/Logiciels/UwAmp/bin/apache/php.ini',   //A modifié selon la config
-    port: 8000,
-    base: 'dist',
-    open: 'true'
-  });
-});
-
 //Creation de l'arborescence
 gulp.task('mkdir', function(){
 	mkdirp(path.src.styles);
@@ -55,7 +45,7 @@ gulp.task('mkdir', function(){
 	mkdirp(path.src.html);
 });
 
-/*Tâche GULP =  */
+/*Tâche SASS =  */
 gulp.task('sass',function(){
 	return gulp.src(path.src.styles+"main.scss") /*récupère le fichier source*/
 		.pipe(sourcemaps.init())
@@ -102,18 +92,21 @@ gulp.task('images', function() {
 // Copy all static assets
 gulp.task('html', function() {
   	return gulp.src(path.src.html)
+  	.pipe(htmlminify())
     .pipe(gulp.dest(path.dist.html))
     .pipe(browserSync.stream())
     .pipe(notify({ message: 'HTML task complete' }))
 });
 
-// Copy all static assets
+/*Tâche PHP =  */
 gulp.task('php', function() {
   	return gulp.src(path.src.php)
+  	.pipe(phpMinify({binary: 'D:\\Logiciels\\UwAmp\\bin\\php\\php-5.6.18\\php.exe'}))
     .pipe(gulp.dest(path.dist.php))
     .pipe(browserSync.stream())
     .pipe(notify({ message: 'PHP task complete' }))
 });
+
 
 /* Watch: permet de bosser sans avoir
 * à relancer les commandes en CLI
@@ -124,7 +117,7 @@ gulp.task('watch', function () {
 
 		server: {
 		    baseDir: "dist",
-		    index: "index.html"
+		    index: "index.html" //fichier par défaut
 		    //directory: true
 		},
 		// Open the site in Chrome
@@ -133,17 +126,35 @@ gulp.task('watch', function () {
 		//browser: ["google chrome", "firefox"]
 
    });
+
+		gulp.watch('./src/sass/**/*.scss', ['sass']);
+	  	gulp.watch('./src/js/**/*.js', ['scripts']);
+	  	gulp.watch('./src/img/*', ['images']);
+	  	gulp.watch('./src/html/**/*.html', ['html']);
+	  	gulp.watch('./src/html/**/*.php', ['php']);
 });
 
 gulp.task('update', function() {
 		gulp.watch('./src/sass/**/*.scss', ['sass']);
 	  	gulp.watch('./src/js/**/*.js', ['scripts']);
 	  	gulp.watch('./src/img/*', ['images']);
-	  	gulp.watch('./src/html/*', ['html','php']);
+	  	gulp.watch('./src/html/**/*.html', ['html']);
+	  	gulp.watch('./src/html/**/*.php', ['php']);
+});
+
+gulp.task('connect', function() {
+  connectPHP.server({
+    hostname: 'localhost',
+    bin: 'D:/Logiciels/UwAmp/bin/php/php-5.6.18/php.exe', //A modifié selon la config
+    ini: 'D:/Logiciels/UwAmp/bin/apache/php.ini',   //A modifié selon la config
+    port: 8000,
+    base: 'dist',
+    open: 'true'
+  });
 });
 
 
-
+gulp.task('init',['mkdir','default'],function(){});
 gulp.task('build',['sass','scripts','images','html','php'],function(){});
-gulp.task('default',['build','watch','update'],function(){});
+gulp.task('default',['build','watch'],function(){});
 gulp.task('php-connect',['connect','update'],function(){});
