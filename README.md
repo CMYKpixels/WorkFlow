@@ -11,7 +11,7 @@ npm i -D
 
 ##Ça fait quoi ?
 
-- Task 'mkdir' crée le dossier src ainsi que c'est dépendances
+- Task 'mkdir' crée le dossier src ainsi que ses sous-dossiers
 
 ```
 .
