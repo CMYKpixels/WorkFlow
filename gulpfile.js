@@ -7,32 +7,20 @@ var config = {
 	ProjectName : ''
 }
 
+var gulp = require('gulp');
+var browserSync = require('browser-sync');
+var notify = require('gulp-notify');
+var reload = browserSync.reload;
 
 var gulpif = require('gulp-if');
 var knownOptions = {
   string: 'env',
   default: { env: process.env.NODE_ENV || 'idem' }
 };
+
 var minimist = require('minimist');
 var options = minimist(process.argv.slice(2), knownOptions);
 
-
-var gulp = require('gulp');
-var sass = require('gulp-sass');
-var csscomb = require('gulp-csscomb');
-var autoprefixer = require('gulp-autoprefixer');
-var sourcemaps = require('gulp-sourcemaps');
-var uglify = require('gulp-uglify');
-var concat = require('gulp-concat');
-var imagemin = require('gulp-imagemin');
-var cache = require('gulp-cache');
-var browserSync = require('browser-sync');
-var notify = require('gulp-notify');
-var reload = browserSync.reload;
-
-var connectPHP = require('gulp-connect-php');
-var phpMinify = require('gulp-php-minify');
-var htmlminify = require("gulp-html-minify");
 
 /*Définition des paths du site*/
 var path ={
@@ -56,7 +44,9 @@ var path ={
 
 //Creation de l'arborescence
 // !! Petit bug la tâche reste coincée dans la console CTRL+C pour la terminer
+
 var mkdirp = require('mkdirp');
+
 gulp.task('mkdir', function(){
 	mkdirp(path.src.styles);
 	mkdirp(path.src.scripts);
@@ -67,6 +57,12 @@ gulp.task('mkdir', function(){
 });
 
 /*Tâche SASS =  */
+
+var sass = require('gulp-sass');
+var csscomb = require('gulp-csscomb');
+var autoprefixer = require('gulp-autoprefixer');
+var sourcemaps = require('gulp-sourcemaps');
+
 gulp.task('sass',function(){
 	return gulp.src(path.src.styles+"main.scss") /*récupère le fichier source*/
 		.pipe(sourcemaps.init())
@@ -84,6 +80,10 @@ gulp.task('sass',function(){
 });
 
 /*Tâche javascripts :*/
+
+var uglify = require('gulp-uglify');
+var concat = require('gulp-concat');
+
 gulp.task('scripts',function(){
 	return gulp.src([
 		path.src.scripts + 'vendors/*.js',
@@ -101,6 +101,10 @@ gulp.task('scripts',function(){
 		.pipe(notify({ message: 'Scripts task complete' }))
 });
 
+/*Optimisation des images*/
+var imagemin = require('gulp-imagemin');
+var cache = require('gulp-cache');
+
 gulp.task('images', function() {
 	return gulp.src(path.src.images)
 	.pipe(cache(imagemin({ optimizationLevel: 5, progressive: true, interlaced: true })))
@@ -111,6 +115,9 @@ gulp.task('images', function() {
 });
 
 // Copy all static assets
+
+var htmlminify = require("gulp-html-minify");
+
 gulp.task('html', function() {
   	return gulp.src(path.src.html)
   	.pipe(htmlminify())
@@ -119,8 +126,10 @@ gulp.task('html', function() {
     //.pipe(notify({ message: 'HTML task complete' }))
 });
 
-console.log(options.env);
 /*Tâche PHP =  */
+
+var phpMinify = require('gulp-php-minify');
+
 gulp.task('php', function() {
   	return gulp.src(path.src.php)
   	.pipe(gulpif(options.env === 'idem', 
@@ -133,8 +142,9 @@ gulp.task('php', function() {
 
 
 /* Watch: permet de bosser sans avoir
-* à relancer les commandes en CLI
-*/
+* à relancer les commandes en CLI*/
+
+var connectPHP = require('gulp-connect-php');
 gulp.task('watch', function() {
 
 if (config.builType==='php') {
