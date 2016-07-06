@@ -133,7 +133,7 @@ var phpMinify = require('gulp-php-minify');
 gulp.task('php', function() {
   	return gulp.src(path.src.php)
   	.pipe(gulpif(options.env === 'idem', 
-  				phpMinify({binary: 'C:\\Users\\mathi\\Desktop\\Logiciels\\uwamp\\bin\\php\\php-5.4.31\\php.exe'}),
+  				phpMinify({binary: 'C:\\Users\\mathi\\Desktop\\Logiciels\\uwamp\\bin\\php\\php-5.6.18\\php.exe'}),
   				phpMinify({binary: 'D:\\Logiciels\\UwAmp\\bin\\php\\php-5.6.18\\php.exe'}))) 
     .pipe(gulp.dest(path.dist.php))
     .pipe(browserSync.stream())
@@ -150,7 +150,7 @@ gulp.task('watch', function() {
 if (config.builType==='php') {
   connectPHP.server({
     //hostname: 'localhost',
-    bin: gulpif(options.env === 'idem','C:/Users/mathi/Desktop/Logiciels/uwamp/bin/php/php-5.4.31/php.exe','D:\\Logiciels\\UwAmp\\bin\\php\\php-5.6.18\\php.exe'), //A modifié selon la config
+    bin: gulpif(options.env === 'idem','C:/Users/mathi/Desktop/Logiciels/uwamp/bin/php/php-5.6.18/php.exe','D:\\Logiciels\\UwAmp\\bin\\php\\php-5.6.18\\php.exe'), //A modifié selon la config
     ini: gulpif(options.env === 'idem','C:/Users/mathi/Desktop/Logiciels/UwAmp/bin/apache/php.ini','D:\\Logiciels\\UwAmp\\bin\\apache\\php.ini'),   //A modifié selon la config
     //port: 8000,
     base: config.buildDir}, function (){
