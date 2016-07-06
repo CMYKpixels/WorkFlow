@@ -13,12 +13,14 @@
     "gulp-connect-php": "0.0.7",
     "gulp-csscomb": "^3.0.7",
     "gulp-html-minify": "0.0.14",
+    "gulp-if": "^2.0.1",
     "gulp-imagemin": "^3.0.1",
     "gulp-notify": "^2.2.0",
     "gulp-php-minify": "^0.1.2",
     "gulp-sass": "^2.3.1",
     "gulp-sourcemaps": "^1.6.0",
     "gulp-uglify": "^1.5.3",
+    "minimist": "^1.2.0",
     "mkdirp": "^0.5.1"
   },
   "scripts": {

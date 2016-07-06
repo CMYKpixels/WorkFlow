@@ -11,7 +11,7 @@ npm i -D
 
 ##Ça fait quoi ?
 
-- Task 'mkdir' crée le dossier src ainsi que ses sous-dossiers
+- Task 'mkdir' crée le dossier de travail src ainsi que ses sous-dossiers
 
 ```
 .
@@ -23,6 +23,8 @@ npm i -D
 │       └── vendors
 └── sass
 ```
+
+
 
 - Task 'sass' 
 - Task 'scripts'

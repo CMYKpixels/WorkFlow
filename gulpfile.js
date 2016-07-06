@@ -1,9 +1,20 @@
+//Gulp default --env idem 
+//
 //*********** CONFIG PROJECT *******************\\
 var config = {
 	builType 	:'php', //for php server type 'php'
 	buildDir 	:'dist/',
 	ProjectName : ''
 }
+
+
+var gulpif = require('gulp-if');
+var knownOptions = {
+  string: 'env',
+  default: { env: process.env.NODE_ENV || 'idem' }
+};
+var minimist = require('minimist');
+var options = minimist(process.argv.slice(2), knownOptions);
 
 
 var gulp = require('gulp');
@@ -18,7 +29,7 @@ var cache = require('gulp-cache');
 var browserSync = require('browser-sync');
 var notify = require('gulp-notify');
 var reload = browserSync.reload;
-var mkdirp = require('mkdirp');
+
 var connectPHP = require('gulp-connect-php');
 var phpMinify = require('gulp-php-minify');
 var htmlminify = require("gulp-html-minify");
@@ -44,6 +55,8 @@ var path ={
 
 
 //Creation de l'arborescence
+// !! Petit bug la tâche reste coincée dans la console CTRL+C pour la terminer
+var mkdirp = require('mkdirp');
 gulp.task('mkdir', function(){
 	mkdirp(path.src.styles);
 	mkdirp(path.src.scripts);
@@ -106,10 +119,13 @@ gulp.task('html', function() {
     //.pipe(notify({ message: 'HTML task complete' }))
 });
 
+console.log(options.env);
 /*Tâche PHP =  */
 gulp.task('php', function() {
   	return gulp.src(path.src.php)
-  	.pipe(phpMinify({binary: 'C:\\Users\\mathi\\Desktop\\Logiciels\\uwamp\\bin\\php\\php-5.4.31\\php.exe'}))
+  	.pipe(gulpif(options.env === 'idem', 
+  				phpMinify({binary: 'C:\\Users\\mathi\\Desktop\\Logiciels\\uwamp\\bin\\php\\php-5.4.31\\php.exe'}),
+  				phpMinify({binary: 'D:\\Logiciels\\UwAmp\\bin\\php\\php-5.6.18\\php.exe'}))) 
     .pipe(gulp.dest(path.dist.php))
     .pipe(browserSync.stream())
     //.pipe(notify({ message: 'PHP task complete' }))
@@ -124,8 +140,8 @@ gulp.task('watch', function() {
 if (config.builType==='php') {
   connectPHP.server({
     //hostname: 'localhost',
-    bin: 'C:/Users/mathi/Desktop/Logiciels/uwamp/bin/php/php-5.4.31/php.exe', //A modifié selon la config
-    ini: 'C:/Users/mathi/Desktop/Logiciels/UwAmp/bin/apache/php.ini',   //A modifié selon la config
+    bin: gulpif(options.env === 'idem','C:/Users/mathi/Desktop/Logiciels/uwamp/bin/php/php-5.4.31/php.exe','D:\\Logiciels\\UwAmp\\bin\\php\\php-5.6.18\\php.exe'), //A modifié selon la config
+    ini: gulpif(options.env === 'idem','C:/Users/mathi/Desktop/Logiciels/UwAmp/bin/apache/php.ini','D:\\Logiciels\\UwAmp\\bin\\apache\\php.ini'),   //A modifié selon la config
     //port: 8000,
     base: config.buildDir}, function (){
     browserSync({
