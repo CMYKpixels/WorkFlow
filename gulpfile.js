@@ -1,3 +1,11 @@
+//*********** CONFIG PROJECT *******************\\
+var config = {
+	builType 	:'php', //for php server type 'php'
+	buildDir 	:'dist/',
+	ProjectName : ''
+}
+
+
 var gulp = require('gulp');
 var sass = require('gulp-sass');
 var csscomb = require('gulp-csscomb');
@@ -25,11 +33,11 @@ var path ={
 		php: './src/html/**/*.php'
 	},
 	dist : {
-		styles: './dist/css/',
-		scripts: './dist/js/',
-		images: './dist/img/',
-		html: './dist/',
-		php: './dist/'
+		styles: config.buildDir+'/css/',
+		scripts: config.buildDir+'/js/',
+		images: config.buildDir+'/img/',
+		html: config.buildDir+'/',
+		php: config.buildDir+'/'
 	},
 	maps : '../maps/'
 };
@@ -95,66 +103,71 @@ gulp.task('html', function() {
   	.pipe(htmlminify())
     .pipe(gulp.dest(path.dist.html))
     .pipe(browserSync.stream())
-    .pipe(notify({ message: 'HTML task complete' }))
+    //.pipe(notify({ message: 'HTML task complete' }))
 });
 
 /*Tâche PHP =  */
 gulp.task('php', function() {
   	return gulp.src(path.src.php)
-  	.pipe(phpMinify({binary: 'D:\\Logiciels\\UwAmp\\bin\\php\\php-5.6.18\\php.exe'}))
+  	.pipe(phpMinify({binary: 'C:\\Users\\mathi\\Desktop\\Logiciels\\uwamp\\bin\\php\\php-5.4.31\\php.exe'}))
     .pipe(gulp.dest(path.dist.php))
     .pipe(browserSync.stream())
-    .pipe(notify({ message: 'PHP task complete' }))
+    //.pipe(notify({ message: 'PHP task complete' }))
 });
 
 
 /* Watch: permet de bosser sans avoir
 * à relancer les commandes en CLI
 */
-gulp.task('watch', function () {
+gulp.task('watch', function() {
 
-	browserSync({
-
-		server: {
-		    baseDir: "dist",
-		    index: "index.html" //fichier par défaut
-		    //directory: true
-		},
-		// Open the site in Chrome
-		browser: "google chrome"
-		// Open the site in Chrome & Firefox
-		//browser: ["google chrome", "firefox"]
-
-   });
-
-		gulp.watch('./src/sass/**/*.scss', ['sass']);
-	  	gulp.watch('./src/js/**/*.js', ['scripts']);
-	  	gulp.watch('./src/img/*', ['images']);
-	  	gulp.watch('./src/html/**/*.html', ['html']);
-	  	gulp.watch('./src/html/**/*.php', ['php']);
-});
-
-gulp.task('update', function() {
-		gulp.watch('./src/sass/**/*.scss', ['sass']);
-	  	gulp.watch('./src/js/**/*.js', ['scripts']);
-	  	gulp.watch('./src/img/*', ['images']);
-	  	gulp.watch('./src/html/**/*.html', ['html']);
-	  	gulp.watch('./src/html/**/*.php', ['php']);
-});
-
-gulp.task('connect', function() {
+if (config.builType==='php') {
   connectPHP.server({
-    hostname: 'localhost',
-    bin: 'D:/Logiciels/UwAmp/bin/php/php-5.6.18/php.exe', //A modifié selon la config
-    ini: 'D:/Logiciels/UwAmp/bin/apache/php.ini',   //A modifié selon la config
-    port: 8000,
-    base: 'dist',
-    open: 'true'
-  });
+    //hostname: 'localhost',
+    bin: 'C:/Users/mathi/Desktop/Logiciels/uwamp/bin/php/php-5.4.31/php.exe', //A modifié selon la config
+    ini: 'C:/Users/mathi/Desktop/Logiciels/UwAmp/bin/apache/php.ini',   //A modifié selon la config
+    //port: 8000,
+    base: config.buildDir}, function (){
+    browserSync({
+    	proxy: '127.0.0.1:8000',
+    	// Open the site in Chrome
+    	browser: "google chrome",
+    	logPrefix: config.ProjectName
+  	});
+   });
+  } else {
+
+  	browserSync({
+
+  			server: {
+  			    baseDir: config.buildDir,
+  			    index: 'index.html' //fichier par défaut
+  			    //directory: true
+  			},
+  			// Open the site in Chrome
+  			browser: "google chrome",
+  			logPrefix: config.ProjectName
+  			// Open the site in Chrome & Firefox
+  			//browser: ["google chrome", "firefox"]
+
+  	   });
+  }
+
+  	gulp.watch('./src/sass/**/*.scss', ['sass']);
+	gulp.watch('./src/js/**/*.js', ['scripts']);
+	gulp.watch('./src/img/*', ['images']);
+	gulp.watch('./src/html/**/*.html', ['html']);
+	gulp.watch('./src/html/**/*.php', ['php']);
+	// stop old version of gulp watch from running when you modify the gulpfile
+	gulp.watch("gulpfile.js").on("change", () => process.exit(0)); 
+
+
 });
+
 
 
 gulp.task('init',['mkdir','default'],function(){});
 gulp.task('build',['sass','scripts','images','html','php'],function(){});
 gulp.task('default',['build','watch'],function(){});
-gulp.task('php-connect',['connect','update'],function(){});
+
+
