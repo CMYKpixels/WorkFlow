@@ -195,5 +195,3 @@ if (config.builType==='php') {
 gulp.task('init',['mkdir','default'],function(){});
 gulp.task('build',['sass','scripts','images','html','php'],function(){});
 gulp.task('default',['build','watch'],function(){});
-
-
