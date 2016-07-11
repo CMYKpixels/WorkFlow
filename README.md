@@ -71,8 +71,9 @@ npm i -D
 - affiche la taille des fichiers.
 
 ### gulp watch
-- selon la variable *config.builType* lance un serveur PHP ou HTML
-
+- selon la variable *config.builType* lance un serveur PHP ou HTML,
+- exécute en tâche de fonds les tâches sur les fichiers,
+- lance un browser pour la visualisation et le raffraichissement.
 
 
 ## Commandes globales Gulp
