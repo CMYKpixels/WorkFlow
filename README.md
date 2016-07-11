@@ -27,14 +27,16 @@ npm i -D
 * Crée les dossiers définits par la variable *PATH*.
 
 ```
-.
-├── src
-│   ├── html
-│   ├── img
-│   └── js
-│       ├── plugins
-│       └── vendors
-└── sass
+Dans ma config :
+
+. 															.
+└── src 													└── dist
+    ├── html 												    ├── files php & html
+    ├── img 													├── css
+    ├── img												    	├── js
+    └── js 													    ├── img
+        ├── plugins 										    └── maps
+        └── vendors
 ```
 
 ### gulp sass
