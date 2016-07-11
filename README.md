@@ -27,7 +27,7 @@ npm i -D
 * Crée les dossiers définits par la variable *PATH*.
 
 ```
-Dans ma config :
+**Dans ma config :**
 
 . 															.
 └── src 													└── dist
