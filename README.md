@@ -23,7 +23,7 @@ npm i -D
 ## Commandes Gulp
 
 ### gulp mkdir
-- Crée les dossiers définits par la variable *PATH*.
+- Créer les dossiers définits par la variable *PATH*.
 
 **Dans ma config :**
 
@@ -45,27 +45,27 @@ npm i -D
 - minifie le code CSS,
 - ordonne les propriétés,
 - enregistre le fichier définit par la variable *config.cssFileName* dans le dossier *path.dist.styles*,
-- crée un sourcemaps,
+- créer un sourcemaps,
 - affiche la taille du fichier main.css.
 
 ### gulp scripts
-- crée un sourcemaps,
+- créer un sourcemaps,
 - uglipfy tous les fichiers JavaScript désignés ou présents dans le dossier dist/js,
 - concatène tous ces fichiers dans un fichier unique définit dans la variable *config.jsFileName*,
 - enregistre le fichier dans le dossier *path.dist.scripts*,
 - affiche la taille du fichier main.js.
 
 ### gulp images
-- optimise les images et les déplace dans le dossier de destination approprié (dist/..)
+- optimise les images et les déplace dans le dossier de destination approprié *path.dist.images*.
 
 ### gulp html
-- crée un sourcemaps,
+- créer un sourcemaps,
 - minify tous les fichiers PHP,
 - enregistre les fichier dans le dossier dist,
 - affiche la taille des fichiers.
 
 ### gulp php
-- crée un sourcemaps,
+- créer un sourcemaps,
 - minify tous les fichiers HTML,
 - enregistre les fichiers dans le dossier dist,
 - affiche la taille des fichiers.
