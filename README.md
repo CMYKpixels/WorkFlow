@@ -33,7 +33,7 @@ Dans ma config :
 └── src 													└── dist
     ├── html 												    ├── files php & html
     ├── img 													├── css
-    ├── img												    	├── js
+    ├── img												    		├── js
     └── js 													    ├── img
         ├── plugins 										    └── maps
         └── vendors
