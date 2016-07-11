@@ -23,7 +23,7 @@ config.jsFileName 	=> Nom du fichier JS de sortie
 
 ## Commandes Gulp
 
-##### gulp mkdir
+### gulp mkdir
 * Crée les dossiers définits par la variable __PATH__.
 
 ```
@@ -37,7 +37,7 @@ config.jsFileName 	=> Nom du fichier JS de sortie
 └── sass
 ```
 
-##### gulp sass
+### gulp sass
 * compile SCSS ,
 * auto-préfixe les propriétés,
 * renomme la feuille de style en main.css,
@@ -47,47 +47,47 @@ config.jsFileName 	=> Nom du fichier JS de sortie
 * crée un sourcemaps,
 * affiche la taille du fichier main.css.
 
-##### gulp scripts
+### gulp scripts
 * crée un sourcemaps,
 * uglipfy tous les fichiers JavaScript désignés ou présents dans le dossier dist/js,
 * concatène tous ces fichiers dans un fichier unique définit dans la variable __config.jsFileName__,
 * enregistre le fichier dans le dossier __(path.dist.scripts__,
 * affiche la taille du fichier main.js.
 
-##### gulp images
+### gulp images
 * optimise les images et les déplace dans le dossier de destination approprié (dist/..)
 
-##### gulp html
+### gulp html
 * crée un sourcemaps,
 * minify tous les fichiers PHP,
 * enregistre les fichier dans le dossier dist,
 * affiche la taille des fichiers.
 
-##### gulp php
+### gulp php
 * crée un sourcemaps,
 * minify tous les fichiers HTML,
 * enregistre les fichiers dans le dossier dist,
 * affiche la taille des fichiers.
 
-##### gulp watch
+### gulp watch
 * selon la variable __config.builType__ lance un serveur PHP ou HTML
 
 
 
 ## Commandes globales Gulp
 
-##### gulp init
+### gulp init
 * gulp mkdir
 * gulp default
 
-##### gulp build
+### gulp build
 * gulp sass
 * gulp scripts
 * gulp images
 * gulp html
 * gulp php
 
-##### gulp default
+### gulp default
 * gulp build
 * gulp watch
 
