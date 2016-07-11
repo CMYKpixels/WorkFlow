@@ -24,7 +24,7 @@ config.jsFileName 	=> Nom du fichier JS de sortie
 ## Commandes Gulp
 
 ### gulp mkdir
-* Crée les dossiers définits par la variable __PATH__.
+* Crée les dossiers définits par la variable *PATH*.
 
 ```
 .
@@ -43,15 +43,15 @@ config.jsFileName 	=> Nom du fichier JS de sortie
 * renomme la feuille de style en main.css,
 * minifie le code CSS,
 * ordonne les propriétés,
-* enregistre le fichier définit par la variable __config.cssFileName__ dans le dossier __path.dist.styles__,
+* enregistre le fichier définit par la variable *config.cssFileName* dans le dossier *path.dist.styles*,
 * crée un sourcemaps,
 * affiche la taille du fichier main.css.
 
 ### gulp scripts
 * crée un sourcemaps,
 * uglipfy tous les fichiers JavaScript désignés ou présents dans le dossier dist/js,
-* concatène tous ces fichiers dans un fichier unique définit dans la variable __config.jsFileName__,
-* enregistre le fichier dans le dossier __(path.dist.scripts__,
+* concatène tous ces fichiers dans un fichier unique définit dans la variable *config.jsFileName*,
+* enregistre le fichier dans le dossier *path.dist.scripts*,
 * affiche la taille du fichier main.js.
 
 ### gulp images
@@ -70,7 +70,7 @@ config.jsFileName 	=> Nom du fichier JS de sortie
 * affiche la taille des fichiers.
 
 ### gulp watch
-* selon la variable __config.builType__ lance un serveur PHP ou HTML
+* selon la variable *config.builType* lance un serveur PHP ou HTML
 
 
 
