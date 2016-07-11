@@ -13,11 +13,11 @@ npm i -D
 
 ## Varibles de configurations
 
-config.builType 	=> Type de web serveur à exécuter //for php server type 'php'
-config.buildDir 	=> Répertoire de destination
-config.ProjectName 	=> Nom du projet
-config.cssFileName 	=> Nom du fichier css de sortie
-config.jsFileName 	=> Nom du fichier JS de sortie
+- config.builType 	=> Type de web serveur à exécuter //for php server type 'php'
+- config.buildDir 	=> Répertoire de destination
+- config.ProjectName 	=> Nom du projet
+- config.cssFileName 	=> Nom du fichier css de sortie
+- config.jsFileName 	=> Nom du fichier JS de sortie
 
 
 
