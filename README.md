@@ -10,7 +10,6 @@ npm i -D
 ```
 
 
-
 ## Varibles de configurations
 
 - config.builType 		=> Type de web serveur à exécuter //for php server type 'php'
