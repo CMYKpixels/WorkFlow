@@ -4,14 +4,20 @@
 var config = {
 	builType 	:'php', //for php server type 'php'
 	buildDir 	:'dist/',
-	ProjectName : ''
+	ProjectName : '',
+	cssFileName : 'style.css',
+	jsFileName	: 'scripts-min.js'
 }
 
 var gulp = require('gulp');
+
+var rename = require('gulp-rename');
+var size = require('gulp-filesize');
 var browserSync = require('browser-sync');
 var notify = require('gulp-notify');
+var gutil = require('gulp-util');
 var reload = browserSync.reload;
-
+var plumber = require('gulp-plumber');
 var gulpif = require('gulp-if');
 var knownOptions = {
   string: 'env',
@@ -34,7 +40,7 @@ var path ={
 	dist : {
 		styles: config.buildDir+'/css/',
 		scripts: config.buildDir+'/js/',
-		images: config.buildDir+'/img/',
+		images: config.buildDir+'/',
 		html: config.buildDir+'/',
 		php: config.buildDir+'/'
 	},
@@ -65,18 +71,22 @@ var sourcemaps = require('gulp-sourcemaps');
 
 gulp.task('sass',function(){
 	return gulp.src(path.src.styles+"main.scss") /*récupère le fichier source*/
+		//.pipe(plumber())
 		.pipe(sourcemaps.init())
 		.pipe(autoprefixer({
 			browsers: ['last 2 versions'], /*nb de versions à préfixer ici 2*/
 			cascade: false})) /*Affichage en cascade ou pas*/
+		.pipe(rename(config.cssFileName))
 		.pipe(sass({
 				outputStyle: 'compressed'/*compilation en compréssé*/
 			}).on('error',sass.logError))
 		.pipe(csscomb())
 		.pipe(sourcemaps.write(path.maps))
 		.pipe(gulp.dest(path.dist.styles)) /*répertoire de destination*/
+		.pipe(size())
 		.pipe(browserSync.stream())
-		.pipe(notify({ message: 'Style task complete' }))
+		.on('end',function(){gutil.log(gutil.colors.yellow('♠ La tâche SASS est terminée.'));});
+
 });
 
 /*Tâche javascripts :*/
@@ -90,15 +100,17 @@ gulp.task('scripts',function(){
 		path.src.scripts + 'plugins/*.js',
 		path.src.scripts + '*.js'
 		]) /*récupère le fichier source*/
+		//.pipe(plumber())
 		.pipe(sourcemaps.init())
 		.pipe(uglify({
 			preserveComments: 'some'  /*garde les  commentaires /*! */
 		}))
-		.pipe(concat('main.min.js')) /*fichier de sortie*/
+		.pipe(concat(config.jsFileName)) /*fichier de sortie*/
 		.pipe(sourcemaps.write(path.maps))
 		.pipe(gulp.dest(path.dist.scripts)) /*répertoire de destination*/
+		.pipe(size())
 		.pipe(browserSync.stream())
-		.pipe(notify({ message: 'Scripts task complete' }))
+		.on('end',function(){gutil.log(gutil.colors.yellow('♠ La tâche SCRIPTS est terminée.'));});
 });
 
 /*Optimisation des images*/
@@ -110,7 +122,7 @@ gulp.task('images', function() {
 	.pipe(cache(imagemin({ optimizationLevel: 5, progressive: true, interlaced: true })))
 	.pipe(gulp.dest(path.dist.images))
 	.pipe(browserSync.stream())
-	.pipe(notify({ message: 'Images task complete' }))
+	.on('end',function(){gutil.log(gutil.colors.yellow('♠ La tâche IMAGES est terminée.'));});
 
 });
 
@@ -120,9 +132,14 @@ var htmlminify = require("gulp-html-minify");
 
 gulp.task('html', function() {
   	return gulp.src(path.src.html)
+  	//.pipe(plumber())
+  	.pipe(sourcemaps.init())
   	.pipe(htmlminify())
+  	.pipe(sourcemaps.write('./maps/'))
     .pipe(gulp.dest(path.dist.html))
+    .pipe(size())
     .pipe(browserSync.stream())
+    .on('end',function(){gutil.log(gutil.colors.yellow('♠ La tâche HTML est terminée.'));});
     //.pipe(notify({ message: 'HTML task complete' }))
 });
 
@@ -132,11 +149,16 @@ var phpMinify = require('gulp-php-minify');
 
 gulp.task('php', function() {
   	return gulp.src(path.src.php)
+  	//.pipe(plumber())
+  	.pipe(sourcemaps.init())
   	.pipe(gulpif(options.env === 'idem', 
   				phpMinify({binary: 'C:\\Users\\mathi\\Desktop\\Logiciels\\uwamp\\bin\\php\\php-5.6.18\\php.exe'}),
   				phpMinify({binary: 'D:\\Logiciels\\UwAmp\\bin\\php\\php-5.6.18\\php.exe'}))) 
+  	.pipe(sourcemaps.write('./maps/'))
     .pipe(gulp.dest(path.dist.php))
+    .pipe(size())
     .pipe(browserSync.stream())
+    .on('end',function(){gutil.log(gutil.colors.yellow('♠ La tâche PHP est terminée.'));});
     //.pipe(notify({ message: 'PHP task complete' }))
 });
 
@@ -150,8 +172,8 @@ gulp.task('watch', function() {
 if (config.builType==='php') {
   connectPHP.server({
     //hostname: 'localhost',
-    bin: gulpif(options.env === 'idem','C:/Users/mathi/Desktop/Logiciels/uwamp/bin/php/php-5.6.18/php.exe','D:\\Logiciels\\UwAmp\\bin\\php\\php-5.6.18\\php.exe'), //A modifié selon la config
-    ini: gulpif(options.env === 'idem','C:/Users/mathi/Desktop/Logiciels/UwAmp/bin/apache/php.ini','D:\\Logiciels\\UwAmp\\bin\\apache\\php.ini'),   //A modifié selon la config
+    bin: gulpif(options.env === 'idem','C:\\Users\\mathi\\Desktop\\Logiciels\\uwamp\\bin\\php\\php-5.6.18\\php.exe','D:\\Logiciels\\UwAmp\\bin\\php\\php-5.6.18\\php.exe'), //A modifié selon la config
+    ini: gulpif(options.env === 'idem','C:\\Users\\mathi\\Desktop\\Logiciels\\UwAmp\\bin\\apache\\php.ini','D:\\Logiciels\\UwAmp\\bin\\apache\\php.ini'),   //A modifié selon la config
     //port: 8000,
     base: config.buildDir}, function (){
     browserSync({
