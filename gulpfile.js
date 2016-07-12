@@ -83,7 +83,7 @@ gulp.task('sass',function(){
 		.pipe(csscomb())
 		.pipe(sourcemaps.write(path.maps))
 		.pipe(gulp.dest(path.dist.styles)) /*répertoire de destination*/
-		.pipe(size())
+		//.pipe(size())
 		.pipe(browserSync.stream())
 		.on('end',function(){gutil.log(gutil.colors.yellow('♠ La tâche SASS est terminée.'));});
 
@@ -156,7 +156,7 @@ gulp.task('php', function() {
   				phpMinify({binary: 'D:\\Logiciels\\UwAmp\\bin\\php\\php-5.6.18\\php.exe'}))) 
   	.pipe(sourcemaps.write('./maps/'))
     .pipe(gulp.dest(path.dist.php))
-    .pipe(size())
+    //.pipe(size())
     .pipe(browserSync.stream())
     .on('end',function(){gutil.log(gutil.colors.yellow('♠ La tâche PHP est terminée.'));});
     //.pipe(notify({ message: 'PHP task complete' }))
